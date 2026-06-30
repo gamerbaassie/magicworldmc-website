@@ -8,6 +8,62 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .external-form-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 36px;
+    max-width: 900px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+    text-align: center;
+  }
+
+  .external-form-card h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: clamp(20px, 3vw, 28px);
+    margin-bottom: 12px;
+  }
+
+  .external-form-card p {
+    color: var(--text-dim);
+    line-height: 1.8;
+    max-width: 680px;
+    margin: 0 auto 24px;
+    font-weight: 300;
+  }
+
+  .form-embed-wrap {
+    margin-top: 28px;
+    border: 1px solid rgba(212,175,55,0.18);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: rgba(255,255,255,0.04);
+    min-height: 720px;
+  }
+
+  .form-embed-wrap iframe {
+    display: block;
+    width: 100%;
+    height: 820px;
+    border: 0;
+    background: #fff;
+  }
+
+  .external-form-note {
+    margin-top: 18px;
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 720px) {
+    .external-form-card { padding: 28px 20px; }
+    .form-embed-wrap iframe { height: 900px; }
+  }
+</style>
 </head>
 <body>
 
@@ -22,7 +78,7 @@
     <a href="index.html">Home</a>
     <a href="bezoeken.html">Bezoeken</a>
     <a href="downloads.html">Downloads</a>
-    <a href="ranks.html" class="active">Media Rank</a>
+    <a href="ranks.html" class="active">🎥 Media Rank</a>
     <a href="regels.html">Regels</a>
     <a href="blogs.html">Blogs</a>
     <a href="vacatures.html">Vacatures</a>
@@ -84,92 +140,28 @@
     ⏱️ Na goedkeuring geldt de Media Rank voor <strong>1 maand</strong>. Aanvragen worden zorgvuldig beoordeeld om misbruik te voorkomen. Je ontvangt binnen 7 dagen bericht.
   </div>
 
-  <!-- APPLICATION FORM -->
-  <div id="form-section">
-    <div class="form-wrapper">
+  <!-- GOOGLE FORM APPLICATION -->
+  <div class="external-form-card">
+    <div style="font-size: 42px; margin-bottom: 14px;">📨</div>
+    <h2>Media Rank aanvraagformulier</h2>
+    <p>
+      Media Rank aanvragen gaan vanaf nu via het officiële Google formulier. Klik op de knop hieronder om je aanvraag in te vullen.
+    </p>
 
-      <div style="text-align:center; margin-bottom: 32px;">
-        <div style="font-size: 36px; margin-bottom: 10px;">📨</div>
-        <div style="font-family:'Cinzel',serif; font-size: 20px; color: var(--gold); font-weight:700;">Aanvraagformulier</div>
-        <div style="color: var(--text-dim); font-size: 13px; margin-top: 6px;">Voel jij dat jij MagicWorldMC kunt vastleggen?</div>
-      </div>
+    <div class="hero-btns" style="margin-bottom: 8px;">
+      <a href="https://forms.gle/XFwf6zUkE1bUa8P89" target="_blank" class="btn btn-primary">📝 Open aanvraagformulier ↗</a>
+      <a href="https://discord.gg/GzgAQgMwMc" target="_blank" class="btn btn-outline">💬 Hulp via Discord</a>
+    </div>
 
-      <div id="form-alert" class="alert" style="display:none;"></div>
+    <div class="external-form-note">
+      Werkt het formulier hieronder niet goed? Gebruik dan de knop <strong class="text-gold">Open aanvraagformulier</strong>.
+    </div>
 
-      <!-- Sectie 1: Persoonlijk -->
-      <div class="form-section-title">👤 Persoonlijke gegevens</div>
-
-      <div class="form-group">
-        <label>Naam <span class="req">*</span></label>
-        <input type="text" id="f-naam" placeholder="Jouw naam">
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-        <div class="form-group">
-          <label>Minecraft gebruikersnaam <span class="req">*</span></label>
-          <input type="text" id="f-mc" placeholder="SteveBuilder123">
-        </div>
-        <div class="form-group">
-          <label>Leeftijd <span class="req">*</span></label>
-          <input type="number" id="f-leeftijd" placeholder="16" min="1" max="99">
-        </div>
-      </div>
-
-      <!-- Sectie 2: Kanaal -->
-      <div class="form-section-title">📺 Kanaalinformatie</div>
-
-      <div class="form-group">
-        <label>Platform <span class="req">*</span></label>
-        <select id="f-platform">
-          <option value="" disabled selected>Kies je platform</option>
-          <option value="YouTube">YouTube</option>
-          <option value="TikTok">TikTok</option>
-          <option value="Twitch">Twitch</option>
-          <option value="Instagram">Instagram</option>
-          <option value="X / Twitter">X / Twitter</option>
-          <option value="Anders">Anders</option>
-        </select>
-      </div>
-
-      <div class="form-group" id="anders-group" style="display:none;">
-        <label>Ander platform</label>
-        <input type="text" id="f-anders" placeholder="Naam van het platform">
-      </div>
-
-      <div class="form-group">
-        <label>Link naar je kanaal <span class="req">*</span></label>
-        <input type="url" id="f-kanaal" placeholder="https://youtube.com/c/jouwnaam">
-      </div>
-
-      <!-- Sectie 3: Motivatie -->
-      <div class="form-section-title">💬 Motivatie</div>
-
-      <div class="form-group">
-        <label>Vertel ons waarom jij de Media Rank verdient <span class="req">*</span></label>
-        <textarea id="f-motivatie" rows="5" placeholder="Vertel ons over je kanaal, je plannen voor MagicWorldMC content en waarom jij in aanmerking komt..."></textarea>
-      </div>
-
-      <div class="form-submit">
-        <button class="btn btn-primary" id="submit-btn" onclick="submitForm()" style="min-width: 200px; justify-content:center;">
-          📨 Aanvraag indienen
-        </button>
-        <p style="color: var(--text-dim); font-size: 12px; margin-top: 12px;">
-          Door te versturen ga je akkoord met onze richtlijnen. Je ontvangt binnen 7 dagen bericht.
-        </p>
-      </div>
-
+    <div class="form-embed-wrap">
+      <iframe src="https://forms.gle/XFwf6zUkE1bUa8P89" title="MagicWorldMC Media Rank aanvraagformulier">Laden…</iframe>
     </div>
   </div>
 
-  <!-- SUCCESS STATE (hidden until submit) -->
-  <div id="success-section" class="form-wrapper" style="display:none; text-align:center;">
-    <div style="font-size: 60px; margin-bottom: 20px;">✨</div>
-    <div style="font-family:'Cinzel',serif; font-size:22px; color:var(--gold); margin-bottom:12px;">Aanvraag ontvangen!</div>
-    <p style="color: var(--text-dim); line-height: 1.8; max-width: 480px; margin: 0 auto 28px;">
-      Bedankt voor je aanvraag! Ons staffteam beoordeelt deze zo snel mogelijk. Je ontvangt binnen 7 dagen bericht via Discord.
-    </p>
-    <a href="https://discord.gg/GzgAQgMwMc" target="_blank" class="btn btn-primary">💬 Join onze Discord</a>
-  </div>
 
 </div>
 
@@ -177,128 +169,6 @@
   <p>© 2026 MagicWorldMC &nbsp;·&nbsp; <a href="login.html">Staff Login</a> &nbsp;·&nbsp; <a href="https://discord.gg/GzgAQgMwMc" target="_blank">Discord</a></p>
 </footer>
 
-<script type="module">
-let db = null;
-let addDocFn = null;
-let collectionFn = null;
-let serverTimestampFn = null;
-
-const LOCAL_KEY = 'mw_media_rank_aanvragen';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyC7ncs5g0eZzGtUymIsDaBGaVUoxWL23Mo",
-  authDomain: "magicworldmc-de515.firebaseapp.com",
-  projectId: "magicworldmc-de515",
-  storageBucket: "magicworldmc-de515.firebasestorage.app",
-  messagingSenderId: "32771602846",
-  appId: "1:32771602846:web:edef1ef87aaabb986dbe8f",
-  measurementId: "G-YKS1C9HYZE"
-};
-
-async function initFirebase() {
-  try {
-    const [{ initializeApp }, firestore] = await Promise.all([
-      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
-      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js')
-    ]);
-
-    const app = initializeApp(firebaseConfig);
-    db = firestore.getFirestore(app);
-    addDocFn = firestore.addDoc;
-    collectionFn = firestore.collection;
-    serverTimestampFn = firestore.serverTimestamp;
-  } catch (err) {
-    console.warn('Firebase kon niet laden. Aanvragen worden lokaal opgeslagen.', err);
-  }
-}
-
-initFirebase();
-
-// Show/hide anders veld
-document.getElementById('f-platform').addEventListener('change', function() {
-  document.getElementById('anders-group').style.display =
-    this.value === 'Anders' ? 'block' : 'none';
-});
-
-function saveLocal(application) {
-  const current = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
-  current.unshift(application);
-  localStorage.setItem(LOCAL_KEY, JSON.stringify(current));
-}
-
-window.submitForm = async function() {
-  const naam      = document.getElementById('f-naam').value.trim();
-  const mc        = document.getElementById('f-mc').value.trim();
-  const leeftijd  = document.getElementById('f-leeftijd').value.trim();
-  const platform  = document.getElementById('f-platform').value;
-  const anders    = document.getElementById('f-anders').value.trim();
-  const kanaal    = document.getElementById('f-kanaal').value.trim();
-  const motivatie = document.getElementById('f-motivatie').value.trim();
-
-  if (!naam || !mc || !leeftijd || !platform || !kanaal || !motivatie) {
-    showAlert('Vul alle verplichte velden in (gemarkeerd met *).', 'error');
-    return;
-  }
-  if (platform === 'Anders' && !anders) {
-    showAlert('Vul de naam van je platform in.', 'error');
-    return;
-  }
-
-  const btn = document.getElementById('submit-btn');
-  btn.innerHTML = '<span class="spinner"></span> Versturen...';
-  btn.disabled = true;
-
-  const application = {
-    id: 'local-' + Date.now(),
-    naam,
-    minecraftnaam: mc,
-    leeftijd,
-    platform: platform === 'Anders' ? anders : platform,
-    kanaallink: kanaal,
-    motivatie,
-    status: 'pending',
-    datum: new Date().toISOString(),
-    aangemaaktOp: new Date().toISOString()
-  };
-
-  // Altijd lokaal opslaan zodat de aanvraag niet verdwijnt als Firebase tijdelijk niet werkt.
-  saveLocal(application);
-
-  try {
-    // Als Firebase beschikbaar is, ook online opslaan zodat staff het dashboard kan gebruiken.
-    if (db && addDocFn && collectionFn) {
-      await addDocFn(collectionFn(db, 'media_rank_aanvragen'), {
-        naam: application.naam,
-        minecraftnaam: application.minecraftnaam,
-        leeftijd: application.leeftijd,
-        platform: application.platform,
-        kanaallink: application.kanaallink,
-        motivatie: application.motivatie,
-        status: 'pending',
-        datum: serverTimestampFn ? serverTimestampFn() : application.datum,
-        aangemaaktOp: application.aangemaaktOp
-      });
-    }
-
-    document.getElementById('form-section').style.display = 'none';
-    document.getElementById('success-section').style.display = 'block';
-    document.getElementById('success-section').scrollIntoView({ behavior: 'smooth' });
-  } catch (err) {
-    console.warn('Online opslaan is mislukt, maar lokaal opslaan is gelukt:', err);
-    document.getElementById('form-section').style.display = 'none';
-    document.getElementById('success-section').style.display = 'block';
-    document.getElementById('success-section').scrollIntoView({ behavior: 'smooth' });
-  }
-};
-
-function showAlert(msg, type) {
-  const el = document.getElementById('form-alert');
-  el.textContent = msg;
-  el.className = 'alert ' + type;
-  el.style.display = 'block';
-  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-</script>
 
 <script>
 function toggleMenu() {
