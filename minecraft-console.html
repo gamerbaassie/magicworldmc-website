@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MagicWorldMC | Minecraft Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="sparkle-container" id="sparkles"></div>
+<nav class="navbar staff-sidebar">
+  <div class="logo">✨ Staff Panel</div>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <div class="nav-links" id="menu">
+    <div class="staff-profile">
+      <div class="staff-avatar">🛡️</div>
+      <div>
+        <div id="nav-user" class="staff-name">Staff</div>
+        <div id="nav-role" class="staff-role">Functie: laden...</div>
+      </div>
+    </div>
+    <a href="dashboard.html" >📋 Media Rank Dashboard</a>
+    <a href="minecraft-console.html" class="active">🖥️ Minecraft Console</a>
+    <a href="disney-audio.html" >🎵 Disney Audio</a>
+    <a href="index.html">← Terug naar site</a>
+    <button onclick="doLogout()" class="btn btn-outline staff-logout">Uitloggen</button>
+  </div>
+</nav>
+<div class="dashboard-wrapper">
+  <div class="dashboard-header">
+    <div>
+      <div class="dashboard-title">🖥️ Minecraft Console</div>
+      <div style="color: var(--text-dim); font-size: 13px; margin-top: 4px;">Aternos server beheer voor MagicWorldMC</div>
+    </div>
+    <a href="https://aternos.org/server/" target="_blank" class="btn btn-primary">🚀 Open Aternos ↗</a>
+  </div>
+
+  <div class="staff-tool-card">
+    <h2>🌐 Aternos Server Console</h2>
+    <p>
+      De Minecraft console draait via Aternos. Klik op de knop hieronder om de Aternos serverpagina te openen.
+      Log daar in met het juiste Aternos account om de server te starten, stoppen en beheren.
+    </p>
+    <div style="margin-top: 22px; display:flex; gap:12px; flex-wrap:wrap;">
+      <a href="https://aternos.org/server/" target="_blank" class="btn btn-primary">🖥️ Naar Aternos Console</a>
+      <a href="dashboard.html" class="btn btn-outline">📋 Terug naar dashboard</a>
+    </div>
+  </div>
+
+  <div class="staff-tool-grid">
+    <div class="staff-tool-card"><h3>Serveradres</h3><p><strong class="text-gold">magicworldmc.aternos.me</strong></p></div>
+    <div class="staff-tool-card"><h3>Minecraft versie</h3><p><strong class="text-gold">1.21.11</strong></p></div>
+    <div class="staff-tool-card"><h3>Bedrock poort</h3><p><strong class="text-gold">63018</strong></p></div>
+  </div>
+</div>
+
+<script type="module">
+const firebaseConfig = {
+  apiKey: "AIzaSyC7ncs5g0eZzGtUymIsDaBGaVUoxWL23Mo",
+  authDomain: "magicworldmc-de515.firebaseapp.com",
+  projectId: "magicworldmc-de515",
+  storageBucket: "magicworldmc-de515.firebasestorage.app",
+  messagingSenderId: "32771602846",
+  appId: "1:32771602846:web:edef1ef87aaabb986dbe8f",
+  measurementId: "G-YKS1C9HYZE"
+};
+
+let auth = null;
+let authApi = null;
+
+function getStaffRole(email) {
+  const roles = {
+    'admin@magicworldmc.nl': 'Eigenaar',
+    'staff@magicworldmc.nl': 'Staff Team',
+    'media@magicworldmc.nl': 'Media Manager'
+  };
+  return roles[String(email || '').toLowerCase()] || 'Staff Team';
+}
+
+async function initStaffAuth() {
+  try {
+    const [{ initializeApp }, authModule] = await Promise.all([
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js')
+    ]);
+    const app = initializeApp(firebaseConfig);
+    authApi = authModule;
+    auth = authModule.getAuth(app);
+    authModule.onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      document.getElementById('nav-user').textContent = user.email || 'Staff';
+      document.getElementById('nav-role').textContent = 'Functie: ' + getStaffRole(user.email);
+    });
+  } catch (err) {
+    document.getElementById('nav-user').textContent = 'Staff';
+    document.getElementById('nav-role').textContent = 'Functie: offline';
+  }
+}
+
+window.doLogout = async function() {
+  if (auth && authApi) await authApi.signOut(auth);
+  window.location.href = 'login.html';
+};
+
+initStaffAuth();
+</script>
+
+<script>
+function toggleMenu() { document.getElementById('menu').classList.toggle('active'); }
+(function() {
+  const c = document.getElementById('sparkles');
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    const sz = Math.random() * 5 + 2;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*6}s;`;
+    c.appendChild(s);
+  }
+})();
+</script>
+</body>
+</html>
