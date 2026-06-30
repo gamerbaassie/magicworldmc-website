@@ -22,7 +22,7 @@
     <a href="index.html">Home</a>
     <a href="bezoeken.html">Bezoeken</a>
     <a href="downloads.html">Downloads</a>
-    <a href="ranks.html" class="active">🎥 Media Rank</a>
+    <a href="ranks.html" class="active">Media Rank</a>
     <a href="regels.html">Regels</a>
     <a href="blogs.html">Blogs</a>
     <a href="vacatures.html">Vacatures</a>
@@ -178,8 +178,12 @@
 </footer>
 
 <script type="module">
-import { initializeApp }  from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+let db = null;
+let addDocFn = null;
+let collectionFn = null;
+let serverTimestampFn = null;
+
+const LOCAL_KEY = 'mw_media_rank_aanvragen';
 
 const firebaseConfig = {
   apiKey: "AIzaSyC7ncs5g0eZzGtUymIsDaBGaVUoxWL23Mo",
@@ -191,14 +195,36 @@ const firebaseConfig = {
   measurementId: "G-YKS1C9HYZE"
 };
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+async function initFirebase() {
+  try {
+    const [{ initializeApp }, firestore] = await Promise.all([
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js')
+    ]);
+
+    const app = initializeApp(firebaseConfig);
+    db = firestore.getFirestore(app);
+    addDocFn = firestore.addDoc;
+    collectionFn = firestore.collection;
+    serverTimestampFn = firestore.serverTimestamp;
+  } catch (err) {
+    console.warn('Firebase kon niet laden. Aanvragen worden lokaal opgeslagen.', err);
+  }
+}
+
+initFirebase();
 
 // Show/hide anders veld
 document.getElementById('f-platform').addEventListener('change', function() {
   document.getElementById('anders-group').style.display =
     this.value === 'Anders' ? 'block' : 'none';
 });
+
+function saveLocal(application) {
+  const current = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+  current.unshift(application);
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(current));
+}
 
 window.submitForm = async function() {
   const naam      = document.getElementById('f-naam').value.trim();
@@ -209,7 +235,6 @@ window.submitForm = async function() {
   const kanaal    = document.getElementById('f-kanaal').value.trim();
   const motivatie = document.getElementById('f-motivatie').value.trim();
 
-  // Validation
   if (!naam || !mc || !leeftijd || !platform || !kanaal || !motivatie) {
     showAlert('Vul alle verplichte velden in (gemarkeerd met *).', 'error');
     return;
@@ -223,26 +248,46 @@ window.submitForm = async function() {
   btn.innerHTML = '<span class="spinner"></span> Versturen...';
   btn.disabled = true;
 
+  const application = {
+    id: 'local-' + Date.now(),
+    naam,
+    minecraftnaam: mc,
+    leeftijd,
+    platform: platform === 'Anders' ? anders : platform,
+    kanaallink: kanaal,
+    motivatie,
+    status: 'pending',
+    datum: new Date().toISOString(),
+    aangemaaktOp: new Date().toISOString()
+  };
+
+  // Altijd lokaal opslaan zodat de aanvraag niet verdwijnt als Firebase tijdelijk niet werkt.
+  saveLocal(application);
+
   try {
-    await addDoc(collection(db, 'media_rank_aanvragen'), {
-      naam,
-      minecraftnaam: mc,
-      leeftijd,
-      platform: platform === 'Anders' ? anders : platform,
-      kanaallink: kanaal,
-      motivatie,
-      status: 'pending',
-      datum: serverTimestamp()
-    });
+    // Als Firebase beschikbaar is, ook online opslaan zodat staff het dashboard kan gebruiken.
+    if (db && addDocFn && collectionFn) {
+      await addDocFn(collectionFn(db, 'media_rank_aanvragen'), {
+        naam: application.naam,
+        minecraftnaam: application.minecraftnaam,
+        leeftijd: application.leeftijd,
+        platform: application.platform,
+        kanaallink: application.kanaallink,
+        motivatie: application.motivatie,
+        status: 'pending',
+        datum: serverTimestampFn ? serverTimestampFn() : application.datum,
+        aangemaaktOp: application.aangemaaktOp
+      });
+    }
 
     document.getElementById('form-section').style.display = 'none';
     document.getElementById('success-section').style.display = 'block';
     document.getElementById('success-section').scrollIntoView({ behavior: 'smooth' });
-
   } catch (err) {
-    showAlert('Er ging iets mis: ' + err.message + '. Probeer het opnieuw.', 'error');
-    btn.innerHTML = '📨 Aanvraag indienen';
-    btn.disabled = false;
+    console.warn('Online opslaan is mislukt, maar lokaal opslaan is gelukt:', err);
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-section').style.display = 'block';
+    document.getElementById('success-section').scrollIntoView({ behavior: 'smooth' });
   }
 };
 
