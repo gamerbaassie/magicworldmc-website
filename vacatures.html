@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MagicWorldMC | Vacatures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars-bg"></div>
+<div class="sparkle-container" id="sparkles"></div>
+<nav class="navbar">
+  <div class="logo">✨ MagicWorldMC</div>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <div class="nav-links" id="menu">
+    <a href="index.html">Home</a>
+    <a href="bezoeken.html">Bezoeken</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="ranks.html">🎥 Media Rank</a>
+    <a href="regels.html">Regels</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="vacatures.html" class="active">Vacatures</a>
+    <a href="team.html">Ons Team</a>
+    <a href="login.html" class="nav-login">🔐 Staff Login</a>
+  </div>
+</nav>
+<div class="page-header">
+  <h1>💼 Vacatures</h1>
+  <p>Wil jij helpen om MagicWorldMC nog magischer te maken?</p>
+</div>
+<section class="section" style="padding-top: 0;">
+
+  <div class="cards">
+    <div class="card"><div class="card-icon">🏰</div><h3>Builder</h3><p>Help mee met het bouwen van kastelen, attracties en magische gebieden.</p></div>
+    <div class="card"><div class="card-icon">🛡️</div><h3>Moderator</h3><p>Help spelers, houd de community veilig en ondersteun het staffteam.</p></div>
+    <div class="card"><div class="card-icon">🎭</div><h3>Event Team</h3><p>Bedenk en organiseer leuke events voor de community.</p></div>
+  </div>
+  <div class="form-note" style="max-width:700px; margin: 34px auto 0; text-align:center;">Vacatures openen binnenkort. Houd onze Discord in de gaten voor sollicitaties.</div>
+  <div style="text-align:center; margin-top: 28px;"><a href="https://discord.gg/GzgAQgMwMc" target="_blank" class="btn btn-primary">💬 Naar Discord</a></div>
+
+</section>
+
+<footer>
+  <p>© 2026 MagicWorldMC &nbsp;·&nbsp; <a href="login.html">Staff Login</a> &nbsp;·&nbsp; <a href="https://discord.gg/GzgAQgMwMc" target="_blank">Discord</a></p>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('menu').classList.toggle('active');
+}
+(function() {
+  const c = document.getElementById('sparkles');
+  for (let i = 0; i < 9; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    const sz = Math.random() * 5 + 2;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${Math.random()*11+8}s;animation-delay:${Math.random()*7}s;`;
+    c.appendChild(s);
+  }
+})();
+</script>
+</body>
+</html>
